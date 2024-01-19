@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SearchBar from '../components/Main page/SearchBar';
@@ -8,9 +8,11 @@ import Link from 'next/link';
 import Trending from '@/components/Main page/Trending';
 import { motion } from 'framer-motion';
 import LoginBtn from '@/components/Main page/LoginBtn';
+import { LoginContext }  from '@/components/loginProvider/loginProvider'
 
 export default function Home() {
-  const [logged, setLogged] = useState(false);
+  const { logged } = useContext(LoginContext)
+
 
 
 

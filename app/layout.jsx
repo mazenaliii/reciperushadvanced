@@ -1,6 +1,6 @@
 import './globals.css'
 import Nav from '../components/Main page/Nav';
-import Provider from '@/components/Main page/Provider';
+import LoginProvider from '../components/loginProvider/loginProvider';
 
 export const metadata = {
   title: 'RecipeRush',
@@ -11,14 +11,14 @@ function RootLayout({ children }) {
     <html lang="en">
 
       <body>
-
-        <Provider>
-          <Nav />
-              <main>
-                 {children}
-              </main>
-        </Provider>
-
+        <div className='gradient1'>
+          <LoginProvider>
+            <Nav />
+            <main>
+              {children}
+            </main>
+          </LoginProvider>
+        </div>
 
       </body>
     </html>

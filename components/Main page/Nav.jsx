@@ -1,5 +1,5 @@
 'use client'
-import * as React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,8 +11,9 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Image from 'next/image'
-import Profile from './Profile';
+import Profile from './ProfileAvatar';
 import Link from 'next/link';
+import { LoginContext } from '@/components/loginProvider/loginProvider'
 
 const pages = ['Recipes', 'Credits'];
 const settings = ['Profile', 'Account', 'Logout'];
@@ -20,7 +21,8 @@ const settings = ['Profile', 'Account', 'Logout'];
 function Nav() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const loggedIn = false
+  const { logged } = useContext(LoginContext)
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -38,7 +40,7 @@ function Nav() {
   };
 
   return (
-    <AppBar position="static" className='nav_bar mt-3'>
+    <AppBar position="static" className='nav_bar'>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Image sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
@@ -118,11 +120,7 @@ function Nav() {
             ))}
           </Box>
 
-         {loggedIn ? <Profile /> : (
-             <>
-             
-            </>
-         )}
+         {logged && <Profile /> }
           
          
         </Toolbar>
