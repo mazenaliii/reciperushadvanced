@@ -1,41 +1,45 @@
 'use client'
 import React, { useState, createContext, useEffect } from 'react';
-
+import axios from 'axios'
 export const LoginContext = createContext();
 
 export default function LoginProvider({ children }) {
   const [logged, setLogged] = useState(false);
-  const [tokenError, setTokenError] = useState(null);
   const [token, setToken] = useState(null); // Initial check
 
   useEffect(() => {
-    const handleTokenChange = () => {
+    const handleTokenChange = async () => {
       try {
-        const newToken = localStorage.getItem('Token');
-        if (newToken) {
-          setToken(newToken);
-          setLogged(true);
-          setTokenError(null);
-        } else {
-          setLogged(false); 
-          setTokenError('Token not found');
-          console.error('Token removed from local storage');
-        }
+        const loginToken = localStorage.getItem('Token')
+        setToken(loginToken)
+        const response = await axios.get('http://localhost:8080/api/verify-token', {
+          headers: {
+            Authorization: `Bearer ${token || loginToken}`
+          }
+        }).then((response) => {
+          if (response.data.isValid) {
+            setLogged(true)
+            console.log('Logged in successfully', response.data.isValid)
+          } else {
+            console.log('Not logged')
+          }
+        }).catch(e => console.log(e))
+
       } catch (error) {
-        setTokenError('Error accessing token');
-        console.error('Error retrieving token:', error);
+        console.error('Not logged bro')
+        console.log(error)
       }
     };
 
-    handleTokenChange(); 
+    handleTokenChange();
 
     window.addEventListener('storage', handleTokenChange);
 
     return () => window.removeEventListener('storage', handleTokenChange);
-  }, []);
+  }, [token]);
 
   return (
-    <LoginContext.Provider value={{ logged, setLogged, tokenError, token }}>
+    <LoginContext.Provider value={{ logged, setLogged, token }}>
       {children}
     </LoginContext.Provider>
   );

@@ -86,11 +86,11 @@ export default function LoginForm() {
 
                 const response = await axios.post(`http://localhost:8080/api/login`, formik.values, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('Token') || token || 'Token not found' }`
+                        authorization: `${localStorage.getItem('Token') || token || 'Token not found' }`
                       }
                 })
 
-                if (response.data.successMessage) {
+                if (response.data.loggedIn) {
                     setSuccessMessage(response.data.successMessage);
                     localStorage.setItem('Token', response.data.token)
                     setSuccess(true)

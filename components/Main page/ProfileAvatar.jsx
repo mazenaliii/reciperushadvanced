@@ -7,13 +7,14 @@ import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { router } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const settings = ['Profile', 'Logout'];
 
 function Profile() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const router = useRouter()
 
 
     const handleOpenUserMenu = (event) => {
@@ -26,12 +27,18 @@ function Profile() {
         setAnchorElUser(null);
     };
 
+    const LogOut = async () => {
+        localStorage.removeItem('Token');
+        router.refresh()
+
+    }
+
     return (
         <>
             <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                        <Avatar/>
                     </IconButton>
                 </Tooltip>
                 <Menu
@@ -50,8 +57,9 @@ function Profile() {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                 >
-                        <MenuItem key={'Profile'} >
+                        <MenuItem key={'Profile'} style={{display: 'flex', flexDirection: 'column'}}>
                             <Link href='/profile' style={{ textAlign: "center", textDecoration: 'none', color: 'black' }}>Profile</Link>
+                            {/* <button style={{ textAlign: "center", textDecoration: 'none', color: 'black' }} onClick={LogOut}>Log out</button> */}
                         </MenuItem>
                 </Menu>
             </Box>

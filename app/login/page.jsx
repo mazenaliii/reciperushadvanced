@@ -10,7 +10,7 @@ export default  function Login() {
 
   useEffect(() => {
     if (logged) {
-      router.push('/');
+      router.replace('/');
     }
   }, [logged]);
 

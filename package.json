@@ -9,10 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
+    "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.16",
-    "@mui/material": "^5.14.17",
+    "@mui/material": "^5.15.6",
     "@mui/styled-engine-sc": "^6.0.0-alpha.5",
     "aws4": "^1.12.0",
     "axios": "^1.6.2",
@@ -25,6 +25,8 @@
     "mongoose": "^8.0.1",
     "next": "^14.0.3",
     "next-auth": "^4.24.5",
+    "primeicons": "^6.0.1",
+    "primereact": "^10.3.3",
     "react": "^18",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18",
