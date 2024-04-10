@@ -25,6 +25,7 @@ import axios from 'axios'
 import { useFormik } from 'formik'
 import { stringify } from 'postcss';
 import { LoginContext }  from '../../components/loginProvider/loginProvider'
+import { redirect } from 'next/navigation';
 
 
 function Copyright(props) {
@@ -65,11 +66,11 @@ export default function LoginForm() {
     const [fail, setFail] = useState(false);
     const [open, setOpen] = useState(true);
     const router = useRouter();
-    const { token } = useContext(LoginContext)
+    const { token, setLogged } = useContext(LoginContext)
 
     useEffect(() => {
         if (success) {
-            router.push('/')
+            redirect('/')
         }
     }, [success])
     const formik = useFormik({
@@ -84,18 +85,16 @@ export default function LoginForm() {
 
             try {
 
-                const response = await axios.post(`http://localhost:8080/api/login`, formik.values, {
-                    headers: {
-                        authorization: `${localStorage.getItem('Token') || token || 'Token not found' }`
-                      }
-                })
+                const response = await axios.post(`https://reciperush-api.onrender.com/api/login`, formik.values)
 
                 if (response.data.loggedIn) {
                     setSuccessMessage(response.data.successMessage);
                     localStorage.setItem('Token', response.data.token)
                     setSuccess(true)
+                    setLogged(true)
                     setFail(false)
                     setOpen(true)
+                    
                 } else {
                     setError(response.data.errMessage);
                     setSuccess(false)
@@ -166,14 +165,15 @@ export default function LoginForm() {
                         alignItems: 'center',
                     }}
                 >
-                    <Typography component="h1" variant="h5" style={{ color: 'white !important' }}>
+                    <h3 className='text-light'>
                         Welcome Back!
-                    </Typography>
+                    </h3>
                     <form onSubmit={formik.handleSubmit} style={{ marginTop: '30px' }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
                                     required
+                                    className
                                     fullWidth
                                     id="email"
                                     label="Email Address"
@@ -208,13 +208,6 @@ export default function LoginForm() {
                                             <LockIcon sx={{ color: 'text.primary', marginRight: '10px' }} />
                                         ),
                                     }}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControlLabel
-                                    control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                    label="Recieve emails of new trending recipes and more."
-                                    style={{ color: 'white !important' }}
                                 />
                             </Grid>
                         </Grid>

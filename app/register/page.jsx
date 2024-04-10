@@ -1,7 +1,7 @@
 'use client'
 import React, { useContext } from 'react';
 import { LoginContext }  from '../../components/loginProvider/loginProvider'
-import RegisterForm from '@/components/AuthenticationPage/registerForm';
+import RegisterForm from '../../components/AuthenticationPage/registerForm';
 import { redirect } from 'next/navigation'
 
 

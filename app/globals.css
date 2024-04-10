@@ -32,9 +32,15 @@ body {
     background-color: black;
 }
 
+@media (max-width: 557px) {
+  .gradient {
+    background-size: cover;
+  }
+}
+
 .gradient1 {
 	background: rgb(0,0,0) ; 
-	background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(255,0,0,1) 100%);
+	background: linear-gradient(90deg, rgb(38, 0, 0) 0%, rgb(176, 14, 14) 100%);
 	height: 100vh
 }
 
@@ -349,36 +355,59 @@ body {
   
   /* ----------------------------------------- Profile ----------------------------------------- */
   
-  .user-information {
-	margin-top: 100px;
-	margin-bottom: 20px;
+  .wrapper {
+    background: rgb(255,170,170);
+    background: linear-gradient(0deg, rgba(255,170,170,0) 25%, rgba(100,0,0,1) 100%);
+    padding: 20px;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    -webkit-box-shadow: 0px 0px 55px -1px rgba(87,0,0,1);
+    -moz-box-shadow: 0px 0px 55px -1px rgba(87,0,0,1);
+    box-shadow: 0px 0px 55px -1px rgba(87,0,0,1);
+}
+
+
+/* ----------------------------------------- Search Results (Recipes) -----------------------------------------  */
+
+.search_bar_2 {
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+
+/* background: url('/spaghetti.jpeg'); */
+
+.results {
+  display: flex; /* Makes recipe divs sit next to each other */
+  flex-wrap: wrap; /* Allows them to wrap to a new line on smaller screens */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Target screens smaller than 768px */
+@media (max-width: 768px) {
+  .results {
+    /* Adjust the number of recipes per row here */
+    flex-direction: column; /* Stack recipes vertically on small screens */
   }
-  
-  @media (max-width: 768px) {
-	.user-information {
-	  margin-bottom: 10px;
-	}
-  }
-   
-   .user-information {
-	padding: 20px;
-	background: rgb(65,0,0);
-	background: linear-gradient(90deg, rgba(65,0,0,1) 0%, rgba(255,59,59,1) 100%);
-	border-radius: 10px;
-   }
+}
 
-
-
-   /*  ------------ Profile ------------   */
-
-   .wrapper {
-    background: rgb(105,0,0);
-    background: linear-gradient(90deg, rgba(105,0,0,1) 0%, rgba(65,0,0,1) 100%);
-    -webkit-box-shadow: 0px 0px 25px -4px rgba(235,42,91,1);
-    -moz-box-shadow: 0px 0px 25px -4px rgba(235,42,91,1);
-    box-shadow: 0px 0px 25px -4px rgb(143, 0, 0);  
-   }
-
-   .white-disabled-text .MuiInputBase-root.Mui-disabled .MuiInputBase-input {
-    color: #fff; 
-   } 
+.resultsBackground {
+  background: rgb(0,0,0) ; 
+	background: linear-gradient(90deg, rgb(38, 0, 0) 0%, rgb(176, 14, 14) 100%);
+  height: auto;
+}
+.recipeResults {
+  background: rgb(0,0,0) ; 
+	background: linear-gradient(45deg, rgb(38, 0, 0) 0%, rgb(176, 14, 14) 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -13,15 +13,17 @@ import MenuItem from '@mui/material/MenuItem';
 import Image from 'next/image'
 import Profile from './ProfileAvatar';
 import Link from 'next/link';
-import { LoginContext } from '@/components/loginProvider/loginProvider'
+import { LoginContext } from '../loginProvider/loginProvider'
+import { useRouter } from 'next/navigation';
 
-const pages = ['Recipes', 'Credits'];
+const pages = ['Credits'];
 const settings = ['Profile', 'Account', 'Logout'];
 
 function Nav() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const { logged } = useContext(LoginContext)
+  const router = useRouter()
 
 
   const handleOpenNavMenu = (event) => {
@@ -112,7 +114,7 @@ function Nav() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => router.push('/credits')}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}

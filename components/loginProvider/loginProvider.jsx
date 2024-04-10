@@ -5,41 +5,34 @@ export const LoginContext = createContext();
 
 export default function LoginProvider({ children }) {
   const [logged, setLogged] = useState(false);
-  const [token, setToken] = useState(null); // Initial check
+  const [token, setToken] = useState(''); 
+  const [userId, setUserId] = useState(""); 
 
   useEffect(() => {
     const handleTokenChange = async () => {
       try {
         const loginToken = localStorage.getItem('Token')
         setToken(loginToken)
-        const response = await axios.get('http://localhost:8080/api/verify-token', {
-          headers: {
-            Authorization: `Bearer ${token || loginToken}`
-          }
-        }).then((response) => {
-          if (response.data.isValid) {
+        const response = await axios.post('https://reciperush-api.onrender.com/api/verify-token', {
+          Token: `${loginToken || token}`  
+        }
+        ).then((response) => {
+          if (response.data.isValid && response.data.userInfo.userId) {
+            setUserId(response.data.userInfo.userId)
             setLogged(true)
-            console.log('Logged in successfully', response.data.isValid)
-          } else {
-            console.log('Not logged')
           }
         }).catch(e => console.log(e))
 
       } catch (error) {
-        console.error('Not logged bro')
         console.log(error)
       }
     };
 
-    handleTokenChange();
-
-    window.addEventListener('storage', handleTokenChange);
-
-    return () => window.removeEventListener('storage', handleTokenChange);
+   !logged && handleTokenChange()
   }, [token]);
 
   return (
-    <LoginContext.Provider value={{ logged, setLogged, token }}>
+    <LoginContext.Provider value={{ logged, setLogged, token, userId }}>
       {children}
     </LoginContext.Provider>
   );

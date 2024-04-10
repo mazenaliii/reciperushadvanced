@@ -22,23 +22,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/navigation';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios'
+import * as Yup from 'yup';
 import { useFormik } from 'formik'
+import { redirect } from 'next/navigation';
 
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props} style={{ marginBottom: '200px' }}>
-      {'Copyright © '}
-      <Link color="inherit" href="/">
-        RecipeRush
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
-// TODO remove, this demo shouldn't need to reset the theme.
+
 
 const whiteTheme = createTheme({
   palette: {
@@ -46,7 +36,7 @@ const whiteTheme = createTheme({
       main: '#ffffff',
     },
     secondary: {
-      main: '#000000', // Adjust background color if needed
+      main: '#000000',
     },
     text: {
       primary: '#ffffff',
@@ -54,6 +44,23 @@ const whiteTheme = createTheme({
     },
   },
 });
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string()
+    .required('Name is required')
+    .test(
+      'has-non-space-characters',
+      'Name cannot consist of only spaces',
+      (value) => value.trim().length > 0
+    )
+    .matches(/^[a-zA-Z ]+$/, 'Name must only contain letters and spaces (English only)')
+    .min(5, 'Name must be at least 5 characters')
+    .max(20, 'Name can\'t contain more than 20 characters'),
+  username: Yup.string().matches(/^[a-z0-9_]+$/, 'Username must only contain alphanumeric characters, numbers and underscores (English only)').required('Username is required').min(3, 'Username must be atleast 3 characters').max(20, 'Username can\'t contain more than 20 characters'),
+  email: Yup.string().email('Invalid email address').required('Email is required'),
+  password: Yup.string().required('Password is required').min(8, 'Password must be at least 8 characters'),
+});
+
 
 
 export default function RegisterForm() {
@@ -66,9 +73,13 @@ export default function RegisterForm() {
   const router = useRouter()
   useEffect(() => {
     if (success) {
-        router.push('/login')
+      redirect('/login')
     }
-}, [success])
+  }, [success])
+
+
+  
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -76,24 +87,24 @@ export default function RegisterForm() {
       name: '',
       username: '',
     },
-    onSubmit: async (values) => {
+    validationSchema: validationSchema,
+    onSubmit: async (e) => {
       setLoading(true);
       setError(null);
       setSuccessMessage(null);
 
       try {
 
-        const response = await axios.post( `http://localhost:8080/api/create-acc`, formik.values)
+
+        const response = await axios.post(`https://reciperush-api.onrender.com/api/create-acc`, formik.values)
 
         if (response.data.successMessage) {
           setSuccessMessage(response.data.successMessage);
-          console.log(response.data.successMessage); // Access response data directly
           setSuccess(true)
           setFail(false)
           setOpen(true)
         } else {
           setError(response.data.errMessage);
-          console.log(response.data.errMessage); // Access response data directly
           setSuccess(false)
           setFail(true)
           setOpen(true)
@@ -102,7 +113,7 @@ export default function RegisterForm() {
         console.log(error)
       } finally {
         setLoading(false);
-        
+
       }
     },
   });
@@ -131,28 +142,27 @@ export default function RegisterForm() {
           </Collapse>
         )}
         {fail && (
-          <Collapse in={open}>
-            <Alert
-             severity="error"
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => setOpen(false)}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              sx={{ mb: 2 }}
-            >
-              {error}
-            </Alert>
-          </Collapse>
+           <Collapse in={open}>
+           <Alert
+               severity="error"
+               action={
+                   <IconButton
+                       aria-label="close"
+                       color="inherit"
+                       size="small"
+                       onClick={() => setOpen(false)}
+                   >
+                       <CloseIcon fontSize="inherit" />
+                   </IconButton>
+               }
+               sx={{ mb: 2 }}
+           >
+               {error}
+           </Alert>
+       </Collapse>
         )}
       </Container>
-      <h1>{ }</h1>
-      <Container component="main" maxWidth="xs" sx={{mt: '-50px'}}>
+      <Container component="main" maxWidth="xs" sx={{ mt: '-50px' }}>
         <CssBaseline />
         <Box
           sx={{
@@ -162,7 +172,7 @@ export default function RegisterForm() {
             alignItems: 'center',
           }}
         >
-          <Typography component="h1" variant="h5" style={{color: 'white !important'}}>
+          <Typography component="h1" variant="h5" style={{ color: 'white !important' }}>
             Welcome to RecipeRush!
           </Typography>
           <form onSubmit={formik.handleSubmit} style={{ marginTop: '30px' }}>
@@ -177,8 +187,8 @@ export default function RegisterForm() {
                   helperText={formik.touched.name && formik.errors.name}
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="fullName"
+                  label="Full Name"
                   autoFocus
                   InputProps={{
                     startAdornment: (
@@ -246,13 +256,6 @@ export default function RegisterForm() {
                   }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="Recieve emails of new trending recipes and more."
-                  style={{color: 'white !important'}}
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -264,7 +267,7 @@ export default function RegisterForm() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2" style={{color: 'white !important'}}>
+                <Link href="/login" variant="body2" style={{ color: 'white !important' }}>
                   Already have an account? Sign in
                 </Link>
               </Grid>
