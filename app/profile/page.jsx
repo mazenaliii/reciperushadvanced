@@ -4,7 +4,6 @@ import { LoginContext } from '../../components/loginProvider/loginProvider';
 import { useRouter } from 'next/navigation';
 import ProfilePage from '../../components/ProfilePage/profile';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 
 

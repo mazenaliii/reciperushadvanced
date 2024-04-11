@@ -2,7 +2,7 @@
 import axios from 'axios'
 import React, { useState, useContext, useEffect } from 'react'
 import { Container, Button } from 'react-bootstrap'
-import Form from 'react-bootstrap/Form'
+import Form from 'react-bootstrap/form'
 import { LoginContext } from '../../components/loginProvider/loginProvider'
 import { FamilyRestroomOutlined, NearMeDisabled } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'

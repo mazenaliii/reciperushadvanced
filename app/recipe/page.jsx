@@ -1,12 +1,10 @@
-import { useRouter } from 'next/navigation'
 import React from 'react'
+import RecipePage from '../../components/Recipe page/recipe'
 
-const RecipePage = () => {
-  const router = useRouter()
-  router.push('/')
+const RecipePageMain = () => {
   return (
-    <div>Nothing exists in this page.</div>
+    <RecipePage />
   )
 }
 
-export default RecipePage
+export default RecipePageMain
