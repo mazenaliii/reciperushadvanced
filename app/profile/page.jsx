@@ -12,10 +12,10 @@ export default  function Login() {
   const router = useRouter()
 
   useEffect(() => {
-    if (!logged) {
+    if (logged === false) {
       router.replace('/');
     }
-  }, []);
+  }, [logged]);
 
   return (
     <div>
